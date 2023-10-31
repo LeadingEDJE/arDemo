@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArViewComponent } from './ar-view.component';
+import { CubeDemoComponent } from './cube-demo.component';
 
-describe('ArViewComponent', () => {
-  let component: ArViewComponent;
-  let fixture: ComponentFixture<ArViewComponent>;
+describe('CubeDemoComponent', () => {
+  let component: CubeDemoComponent;
+  let fixture: ComponentFixture<CubeDemoComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ArViewComponent]
+      declarations: [CubeDemoComponent]
     });
-    fixture = TestBed.createComponent(ArViewComponent);
+    fixture = TestBed.createComponent(CubeDemoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

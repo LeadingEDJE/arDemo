@@ -1,12 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as THREE from 'three';
+import * as THREE from "three";
 
 @Component({
-  selector: 'app-ar-view',
-  templateUrl: './ar-view.component.html',
-  styleUrls: ['./ar-view.component.scss']
+  selector: 'app-cube-demo',
+  templateUrl: './cube-demo.component.html',
+  styleUrls: ['./cube-demo.component.scss']
 })
-export class ArViewComponent implements OnInit {
+export class CubeDemoComponent implements OnInit {
 
   @ViewChild('ARCanvas', {static: true})
   private canvasRef?: ElementRef;
@@ -40,7 +40,7 @@ export class ArViewComponent implements OnInit {
 
     // Create the cube and add it to the demo scene.
     const cube = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), materials);
-    cube.position.set(1, 1, 1);
+    cube.position.set(0, 0, -1);
     scene.add(cube);
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.

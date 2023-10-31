@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ArViewComponent } from './ar-view/ar-view.component';
+import { CubeDemoComponent } from './cube-demo/cube-demo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ArViewComponent
+    CubeDemoComponent
   ],
   imports: [
     BrowserModule,

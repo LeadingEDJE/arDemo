@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ArViewComponent} from "./ar-view/ar-view.component";
+import {CubeDemoComponent} from "./cube-demo/cube-demo.component";
 
 const routes: Routes = [
-  {path: "", redirectTo: "ar-view", pathMatch: "full"},
-  {path: "ar-view", component: ArViewComponent}
+  {path: "", redirectTo: "cube-demo", pathMatch: "full"},
+  {path: "cube-demo", component: CubeDemoComponent}
 ];
 
 @NgModule({
