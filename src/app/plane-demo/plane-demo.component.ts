@@ -39,16 +39,6 @@ export class PlaneDemoComponent implements OnInit {
     // To be continued in upcoming steps.
     const scene = new THREE.Scene();
 
-    // The cube will have a different color on each side.
-    const materials = [
-      new THREE.MeshBasicMaterial({color: 0xff0000}),
-      new THREE.MeshBasicMaterial({color: 0x0000ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ff00}),
-      new THREE.MeshBasicMaterial({color: 0xff00ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ffff}),
-      new THREE.MeshBasicMaterial({color: 0xffff00})
-    ];
-
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
     directionalLight.position.set(10, 15, 10);
     scene.add(directionalLight);
@@ -85,7 +75,6 @@ export class PlaneDemoComponent implements OnInit {
     // near the viewer's position at the time the session was created.
     const referenceSpace = await session.requestReferenceSpace('local');
 
-
     const loader = new GLTFLoader();
     let reticle: THREE.Object3D<THREE.Object3DEventMap>;
     loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", function (gltf) {
@@ -112,34 +101,32 @@ export class PlaneDemoComponent implements OnInit {
     const scenePoints: THREE.Object3D<THREE.Object3DEventMap>[] = [];
     session.addEventListener("select", (event) => {
       if (reticle) {
-        const clone = reticle.clone();
-        clone.position.copy(reticle.position);
-        scenePoints.push(clone);
-        scene.add(clone);
+        // const clone = reticle.clone();
+        const geometry = new THREE.CircleGeometry( 0.01, 32 ); 
+        const material = new THREE.MeshBasicMaterial( { color: 0x0000ff } ); 
+        const circle = new THREE.Mesh( geometry, material );
+        circle.position.copy(reticle.position);
+        scenePoints.push(circle);
+        scene.add(circle);
 
         if (scenePoints.length > 1) {
-          //create a blue LineBasicMaterial
-          const material = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 5});
-
           const points: Vector3[] = [];
           let start = scenePoints[scenePoints.length - 1].position;
           let end = scenePoints[scenePoints.length - 2].position
           points.push(start);
           points.push(end);
 
-          const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-          const line = new THREE.Line(geometry, material);
-          scene.add(line);
-
-          // also build plane
-          let height = 0.5; // arbitrary
+          console.log('camera.position', camera.position)
+          let height = 1; // arbitrary
           let width = start.distanceTo(end);
           const planeGeometry = new THREE.PlaneGeometry(width, height);
           const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-          const rot = end.sub(start);
-          const pos = (end.sub(start)).divideScalar(2).add(start);
+          const pos = (end.clone().sub(start)).divideScalar(2).add(start);
           plane.position.set(pos.x, pos.y, pos.z);
+
+          plane.lookAt(start);
+          plane.rotateY(Math.PI / 2);
+
           scene.add(plane);
         }
       }
