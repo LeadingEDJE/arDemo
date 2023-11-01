@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cube-demo',
@@ -11,6 +12,13 @@ export class CubeDemoComponent implements OnInit {
   @ViewChild('ARCanvas', {static: true})
   private canvasRef?: ElementRef;
   private canvas!: HTMLCanvasElement;
+
+  constructor(private router: Router) {
+  }
+
+  async navigate(target: string): Promise<boolean> {
+    return this.router.navigate([target]);
+  }
 
   public ngOnInit() {
     if (this.canvasRef) {
