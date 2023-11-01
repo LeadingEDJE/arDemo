@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { CubeDemoComponent } from './cube-demo/cube-demo.component';
 import { HomeComponent } from './home/home.component';
 import {FlowerDemoComponent} from "./flower-demo/flower-demo.component";
+import {LineDemoComponent} from "./line-demo/line-demo.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     CubeDemoComponent,
     FlowerDemoComponent,
+    LineDemoComponent,
     HomeComponent
   ],
   imports: [
