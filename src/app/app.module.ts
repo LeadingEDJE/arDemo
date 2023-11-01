@@ -7,6 +7,7 @@ import { CubeDemoComponent } from './cube-demo/cube-demo.component';
 import { HomeComponent } from './home/home.component';
 import {FlowerDemoComponent} from "./flower-demo/flower-demo.component";
 import {LineDemoComponent} from "./line-demo/line-demo.component";
+import { PlaneDemoComponent } from './plane-demo/plane-demo.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {LineDemoComponent} from "./line-demo/line-demo.component";
     CubeDemoComponent,
     FlowerDemoComponent,
     LineDemoComponent,
-    HomeComponent
+    HomeComponent,
+    PlaneDemoComponent
   ],
   imports: [
     BrowserModule,
