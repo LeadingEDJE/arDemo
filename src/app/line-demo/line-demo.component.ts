@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-line-demo',
@@ -12,6 +13,13 @@ export class LineDemoComponent implements OnInit {
   @ViewChild('ARCanvas', {static: true})
   private canvasRef?: ElementRef;
   private canvas!: HTMLCanvasElement;
+
+  constructor(private router: Router) {
+  }
+
+  async navigate(target: string): Promise<boolean> {
+    return this.router.navigate([target]);
+  }
 
   public ngOnInit() {
     if (this.canvasRef) {
