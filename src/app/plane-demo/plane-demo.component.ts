@@ -116,7 +116,6 @@ export class PlaneDemoComponent implements OnInit {
           points.push(start);
           points.push(end);
 
-          console.log('camera.position', camera.position)
           let height = 1; // arbitrary
           let width = start.distanceTo(end);
           const planeGeometry = new THREE.PlaneGeometry(width, height);
@@ -127,17 +126,12 @@ export class PlaneDemoComponent implements OnInit {
           plane.lookAt(start);
           plane.rotateY(Math.PI / 2);
 
+          plane.position.setY(plane.position.y + .5);
+
           scene.add(plane);
         }
       }
     });
-
-    // simple plane as a reminder TODO remove
-    // const geometry = new THREE.PlaneGeometry(1, 1);
-    // const material = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-    // const plane = new THREE.Mesh(geometry, material);
-    // plane.position.set(0, 0, -1);
-    // scene.add(plane);
 
     // Create another XRReferenceSpace that has the viewer as the origin.
     const viewerSpace = await session.requestReferenceSpace('viewer');
