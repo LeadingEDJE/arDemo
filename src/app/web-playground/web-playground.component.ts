@@ -36,7 +36,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     } else {
       throw new Error("AR Canvas is Required!")
     }
-    const parent = this.canvas.parentElement;
+    this.canvas.width = window.innerWidth - 100;
+    this.canvas.height = window.innerHeight - 100;
     const webGL = this.canvas.getContext("webgl");
     if (!webGL) throw new Error("Unable to load WebGL rendering context");
 
@@ -65,8 +66,10 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
       context: webGL
     });
     this.renderer.autoClear = false;
-    this.renderer.setSize(this.canvas.width, this.canvas.height);
+    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
     this.camera = new THREE.PerspectiveCamera();
+    this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+    this.camera.updateProjectionMatrix();
     this.running = true;
     window.requestAnimationFrame((delta) => this.onAnimationFrame(delta));
   }
