@@ -2,6 +2,8 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {Router} from "@angular/router";
 import * as THREE from "three";
 import {BoxGeometry, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from "three";
+import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 @Component({
   selector: 'app-web-playground',
@@ -20,6 +22,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
   private camera!: PerspectiveCamera;
   private scene!: Scene;
   private cube!: Mesh<BoxGeometry>;
+
+  private controls!: OrbitControls;
 
   private _time: DOMHighResTimeStamp = 0;
 
@@ -91,6 +95,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this.camera.position.set(1, 1, 1);
     this.camera.lookAt(plane.position);
     this.camera.updateProjectionMatrix();
+    this.controls = new OrbitControls(this.camera, this.canvas);
     this.running = true;
     window.requestAnimationFrame((delta) => this.onAnimationFrame(delta));
   }
@@ -106,6 +111,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     const delta = (time - this._time) / 1000;
     this._time = time;
     this.cube.rotateY(Math.PI * delta);
+    this.controls.update(delta);
     // Render the scene with THREE.WebGLRenderer.
     this.renderer.render(this.scene, this.camera);
   }
