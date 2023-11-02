@@ -37,16 +37,6 @@ export class FlowerDemoComponent implements OnInit {
     // To be continued in upcoming steps.
     const scene = new THREE.Scene();
 
-    // The cube will have a different color on each side.
-    const materials = [
-      new THREE.MeshBasicMaterial({color: 0xff0000}),
-      new THREE.MeshBasicMaterial({color: 0x0000ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ff00}),
-      new THREE.MeshBasicMaterial({color: 0xff00ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ffff}),
-      new THREE.MeshBasicMaterial({color: 0xffff00})
-    ];
-
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
     directionalLight.position.set(10, 15, 10);
     scene.add(directionalLight);
