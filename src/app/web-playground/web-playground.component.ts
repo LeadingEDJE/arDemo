@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import * as THREE from "three";
-import {BoxGeometry, Mesh, PerspectiveCamera, Scene, WebGLRenderer} from "three";
+import {BoxGeometry, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from "three";
 
 @Component({
   selector: 'app-web-playground',
@@ -42,9 +42,27 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     if (!webGL) throw new Error("Unable to load WebGL rendering context");
 
     this.scene = new THREE.Scene();
+    const textureLoader = new THREE.TextureLoader();
+
+    // Plane
+    const PLANE_SIZE = 4;
+    const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png",);
+    gridTexture.wrapS = THREE.RepeatWrapping;
+    gridTexture.wrapT = THREE.RepeatWrapping;
+    gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
+    const gridMaterial = new THREE.MeshBasicMaterial();
+    gridMaterial.map = gridTexture;
+    gridMaterial.needsUpdate = true;
+    gridMaterial.side = THREE.DoubleSide;
+    gridMaterial.transparent = true;
+    const geometry = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE);
+    const plane = new THREE.Mesh(geometry, gridMaterial);
+    plane.position.set(0, 0, 0);
+    plane.lookAt(new Vector3(0, 5, 0));
+    this.scene.add(plane);
 
     // The cube will have a different color on each side.
-    const materials = [
+    const cubeMaterial = [
       new THREE.MeshBasicMaterial({color: 0xff0000}),
       new THREE.MeshBasicMaterial({color: 0x0000ff}),
       new THREE.MeshBasicMaterial({color: 0x00ff00}),
@@ -54,8 +72,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     ];
 
     // Create the cube and add it to the demo scene.
-    this.cube = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.2), materials);
-    this.cube.position.set(0.2, 0.2, -1);
+    this.cube = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, 0.25), cubeMaterial);
+    this.cube.position.set(0, 0.25, -1);
     this.scene.add(this.cube);
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
@@ -69,6 +87,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
     this.camera = new THREE.PerspectiveCamera();
     this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+    this.camera.position.set(1, 1, 1);
+    this.camera.lookAt(plane.position);
     this.camera.updateProjectionMatrix();
     this.running = true;
     window.requestAnimationFrame((delta) => this.onAnimationFrame(delta));
