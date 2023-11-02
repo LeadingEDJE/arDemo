@@ -1,0 +1,18 @@
+---
+Environment: all
+StackName: "{{ Environment }}-ARDemo"
+Template: cloudfront.yml
+Parameters:
+  Application: ardemo
+  Environment: "{{ Environment }}"
+  PublicDomain: "{{PublicDomain}}"
+Tags:
+  Application: ardemo
+  Environment: "{{ Environment }}"
+---
+Environment: development
+Region: us-east-2
+# Parameters:
+#   CertificateArn:
+Variables:
+  PublicDomain: dev.leadingedje.com
