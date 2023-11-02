@@ -101,11 +101,17 @@ export class PlaneDemoComponent implements OnInit {
     const scenePoints: THREE.Object3D<THREE.Object3DEventMap>[] = [];
     session.addEventListener("select", (event) => {
       if (reticle) {
-        // const clone = reticle.clone();
         const geometry = new THREE.CircleGeometry( 0.01, 32 ); 
         const material = new THREE.MeshBasicMaterial( { color: 0x0000ff } ); 
         const circle = new THREE.Mesh( geometry, material );
         circle.position.copy(reticle.position);
+        // This is to snap the position to a close position
+        scenePoints.forEach(point => {
+          const distance = point.position.distanceTo(reticle.position);
+          if (distance < 0.2 && distance <= point.position.distanceTo(circle.position)) {
+            circle.position.copy(point.position);
+          }
+        });
         scenePoints.push(circle);
         scene.add(circle);
 
@@ -126,7 +132,7 @@ export class PlaneDemoComponent implements OnInit {
           plane.lookAt(start);
           plane.rotateY(Math.PI / 2);
 
-          plane.position.setY(plane.position.y + .5);
+          plane.position.setY(plane.position.y + .2);
 
           scene.add(plane);
         }
