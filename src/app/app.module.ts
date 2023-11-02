@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import {FlowerDemoComponent} from "./flower-demo/flower-demo.component";
 import {LineDemoComponent} from "./line-demo/line-demo.component";
 import { PlaneDemoComponent } from './plane-demo/plane-demo.component';
+import { WebPlaygroundComponent } from './web-playground/web-playground.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PlaneDemoComponent } from './plane-demo/plane-demo.component';
     FlowerDemoComponent,
     LineDemoComponent,
     HomeComponent,
-    PlaneDemoComponent
+    PlaneDemoComponent,
+    WebPlaygroundComponent
   ],
   imports: [
     BrowserModule,
