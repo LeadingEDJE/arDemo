@@ -72,8 +72,9 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     ];
 
     // Create the cube and add it to the demo scene.
-    this.cube = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, 0.25), cubeMaterial);
-    this.cube.position.set(0, 0.25, -1);
+    const CUBE_SIZE = 0.25;
+    this.cube = new THREE.Mesh(new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeMaterial);
+    this.cube.position.set(-1, CUBE_SIZE / 2, -1);
     this.scene.add(this.cube);
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
