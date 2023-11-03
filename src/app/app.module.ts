@@ -9,6 +9,7 @@ import {FlowerDemoComponent} from "./flower-demo/flower-demo.component";
 import {LineDemoComponent} from "./line-demo/line-demo.component";
 import { PlaneDemoComponent } from './plane-demo/plane-demo.component';
 import { WebPlaygroundComponent } from './web-playground/web-playground.component';
+import { ArCanvasComponent } from './ar-canvas/ar-canvas.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { WebPlaygroundComponent } from './web-playground/web-playground.componen
     LineDemoComponent,
     HomeComponent,
     PlaneDemoComponent,
-    WebPlaygroundComponent
+    WebPlaygroundComponent,
+    ArCanvasComponent
   ],
   imports: [
     BrowserModule,

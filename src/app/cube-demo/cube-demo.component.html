@@ -1,8 +1,3 @@
-<header>
-  <button id="home-button" (click)="navigate('home')">Home</button>
-  <h1>Cube Demo</h1>
-</header>
-<!-- Starting an immersive WebXR session requires user interaction.
-    We start this one with a simple button. -->
-<button id="activate-button" (click)="activateXR()">Activate WebXR</button>
-<canvas #ARCanvas></canvas>
+<app-ar-canvas pageTitle="Cube Demo"
+               [onARLoaded]="onARLoaded"
+></app-ar-canvas>
