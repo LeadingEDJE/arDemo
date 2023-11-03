@@ -1,7 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import * as THREE from "three";
-import {Camera, Scene, WebGLRenderer} from "three";
+import {Camera, PerspectiveCamera, Scene, WebGLRenderer} from "three";
 
 @Component({
   selector: 'app-ar-canvas',
@@ -16,10 +15,10 @@ export class ArCanvasComponent implements OnInit {
   @Input() onBeforeARLoad: () => Promise<void> = async (): Promise<void> => {
     // dummy that will be replaced by parent component
   };
-  @Input() onARLoaded: (arContext: ARContext) => Promise<void> = async (arContext: ARContext): Promise<void> => {
+  @Input() onARLoaded: (arContext: ARContext) => Promise<void> = async (): Promise<void> => {
     // dummy that will be replaced by parent component
   };
-  @Input() onARFrame: (arFrameEvent: ARFrameEvent) => Promise<void> = async (arFrameEvent: ARFrameEvent): Promise<void> => {
+  @Input() onARFrame: (arFrameEvent: ARFrameEvent) => Promise<void> = async (): Promise<void> => {
     // dummy that will be replaced by parent component
   };
 
@@ -54,7 +53,7 @@ export class ArCanvasComponent implements OnInit {
     if (!webGLContext) throw new Error("Unable to load WebGL rendering context");
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       alpha: true,
       preserveDrawingBuffer: true,
       canvas: this._canvas,
@@ -81,7 +80,7 @@ export class ArCanvasComponent implements OnInit {
     // The API directly updates the camera matrices.
     // Disable matrix auto updates so three.js doesn't attempt
     // to handle the matrices independently.
-    const camera = new THREE.PerspectiveCamera();
+    const camera = new PerspectiveCamera();
     camera.matrixAutoUpdate = false;
 
     // Create context
