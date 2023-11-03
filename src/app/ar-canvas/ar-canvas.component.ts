@@ -11,8 +11,8 @@ import {Camera, Scene, WebGLRenderer} from "three";
 export class ArCanvasComponent implements OnInit {
 
   @Input() pageTitle: string = "AR Canvas";
-  @Input() mode: XRSessionMode = "immersive-ar";
-  @Input() requiredFeatures: string[] = [];
+  @Input() xrMode: XRSessionMode = "immersive-ar";
+  @Input() xrRequiredFeatures: string[] = [];
 
   @Output() $onActivateXR = new EventEmitter<void>();
   @Output() $onARLoaded = new EventEmitter<ARContext>();
@@ -60,7 +60,7 @@ export class ArCanvasComponent implements OnInit {
     // Initialize a WebXR session using "immersive-ar".
     if (!window.navigator.xr) throw new Error("Unable to find XR system");
     const sessionRequest = window.navigator.xr.requestSession(
-      this.mode, {requiredFeatures: this.requiredFeatures}
+      this.xrMode, {requiredFeatures: this.xrRequiredFeatures}
     );
     if (!sessionRequest) throw new Error("Could not request immersive-ar session!")
     const session = await sessionRequest;
@@ -130,7 +130,6 @@ export class ArCanvasComponent implements OnInit {
       const delta = (time - this._time) / 1000;
       this._time = time;
       this.$onARFrame.emit({
-        context: this._context,
         delta, time, frame, view
       });
       // Render the scene with THREE.WebGLRenderer.
@@ -144,7 +143,6 @@ export class ArCanvasComponent implements OnInit {
  * Represents data to be sent to other components every frame.
  */
 export interface ARFrameEvent {
-  context: ARContext;
   delta: number,
   time: number,
   frame: XRFrame,
