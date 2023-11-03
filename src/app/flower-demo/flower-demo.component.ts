@@ -19,7 +19,7 @@ export class FlowerDemoComponent {
   private space!: XRReferenceSpace;
 
   public async onARLoaded(context: ARContext) {
-    let {session} = context;
+    const {session} = context;
     this.scene = context.scene;
     this.space = context.space;
 
@@ -52,8 +52,7 @@ export class FlowerDemoComponent {
 
   public onARFrame(event: ARFrameEvent) {
     if (!this.hitTestSource) throw Error("Unable to find hit test source");
-    let {frame} = event;
-    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
+    const hitTestResults = event.frame.getHitTestResults(this.hitTestSource);
     if (hitTestResults.length > 0 && this.reticle) {
       const hitPose = hitTestResults[0].getPose(this.space);
       if (hitPose) {
