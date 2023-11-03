@@ -9,8 +9,6 @@ import {ARContext} from "../ar-canvas/ar-canvas.component";
 })
 export class CubeDemoComponent {
 
-  private cube!: Mesh<BoxGeometry>;
-
   public async onARLoaded(context: ARContext) {
     // The cube will have a different color on each side.
     const materials = [
@@ -22,9 +20,9 @@ export class CubeDemoComponent {
       new MeshBasicMaterial({color: 0xffff00})
     ];
     // Create the cube and add it to the demo scene.
-    this.cube = new Mesh(new BoxGeometry(0.2, 0.2, 0.2), materials);
-    this.cube.position.set(0, 0, -1);
-    context.scene.add(this.cube);
+    const cube = new Mesh(new BoxGeometry(0.2, 0.2, 0.2), materials);
+    cube.position.set(0, 0, -1);
+    context.scene.add(cube);
   }
 
 }
