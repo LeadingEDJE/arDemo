@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {BoxGeometry, Mesh, MeshBasicMaterial} from "three";
 import {ARContext} from "../ar-canvas/ar-canvas.component";
+import {bindCallback} from "rxjs";
 
 @Component({
   selector: 'app-cube-demo',
@@ -9,7 +10,7 @@ import {ARContext} from "../ar-canvas/ar-canvas.component";
 })
 export class CubeDemoComponent {
 
-  public async onARLoaded(context: ARContext) {
+  public onARLoaded = async (context: ARContext): Promise<void> => {
     // The cube will have a different color on each side.
     const materials = [
       new MeshBasicMaterial({color: 0xff0000}),

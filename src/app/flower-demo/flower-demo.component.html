@@ -1,5 +1,5 @@
 <app-ar-canvas pageTitle="Flower Demo"
                [xrRequiredFeatures]="xrRequiredFeatures"
-               ($onARLoaded)="onARLoaded($event)"
-               ($onARFrame)="onARFrame($event)"
+               [onARLoaded]="onARLoaded"
+               [onARFrame]="onARFrame"
 ></app-ar-canvas>

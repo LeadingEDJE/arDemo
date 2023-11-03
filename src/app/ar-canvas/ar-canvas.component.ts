@@ -13,10 +13,15 @@ export class ArCanvasComponent implements OnInit {
   @Input() pageTitle: string = "AR Canvas";
   @Input() xrMode: XRSessionMode = "immersive-ar";
   @Input() xrRequiredFeatures: string[] = [];
-
-  @Output() $onActivateXR = new EventEmitter<void>();
-  @Output() $onARLoaded = new EventEmitter<ARContext>();
-  @Output() $onARFrame = new EventEmitter<ARFrameEvent>();
+  @Input() onBeforeARLoad: () => Promise<void> = async (): Promise<void> => {
+    // dummy that will be replaced by parent component
+  };
+  @Input() onARLoaded: (arContext: ARContext) => Promise<void> = async (arContext: ARContext): Promise<void> => {
+    // dummy that will be replaced by parent component
+  };
+  @Input() onARFrame: (arFrameEvent: ARFrameEvent) => Promise<void> = async (arFrameEvent: ARFrameEvent): Promise<void> => {
+    // dummy that will be replaced by parent component
+  };
 
   @ViewChild('ARCanvas', {static: true})
   private _canvasRef?: ElementRef;
@@ -44,7 +49,7 @@ export class ArCanvasComponent implements OnInit {
    * When the user presses the Activate XR button...
    */
   public async activateXR() {
-    this.$onActivateXR.emit();
+    await this.onBeforeARLoad();
     const webGLContext = this._canvas.getContext("webgl", {xrCompatible: true});
     if (!webGLContext) throw new Error("Unable to load WebGL rendering context");
 
@@ -88,7 +93,7 @@ export class ArCanvasComponent implements OnInit {
       camera: camera,
       space: referenceSpace
     };
-    this.$onARLoaded.emit(this._context);
+    await this.onARLoaded(this._context);
     // Create a render loop that allows us to draw on the AR view.
     session.requestAnimationFrame((t, f) => this.onXRFrame(t, f));
   }
@@ -96,7 +101,7 @@ export class ArCanvasComponent implements OnInit {
   /**
    * Is called every frame in order to redraw the scene...
    */
-  private onXRFrame(time: number, frame: XRFrame): void {
+  private async onXRFrame(time: number, frame: XRFrame): Promise<void> {
     const {
       session,
       webGL,
@@ -129,9 +134,7 @@ export class ArCanvasComponent implements OnInit {
       camera.updateMatrixWorld(true);
       const delta = (time - this._time) / 1000;
       this._time = time;
-      this.$onARFrame.emit({
-        delta, time, frame, view
-      });
+      await this.onARFrame({delta, time, frame, view});
       // Render the scene with THREE.WebGLRenderer.
       renderer.render(scene, camera);
     }
