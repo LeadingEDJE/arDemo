@@ -11,6 +11,8 @@ import {Camera, Scene, WebGLRenderer} from "three";
 export class ArCanvasComponent implements OnInit {
 
   @Input() pageTitle: string = "AR Canvas";
+  @Input() mode: XRSessionMode = "immersive-ar";
+  @Input() requiredFeatures: string[] = [];
 
   @Output() $onActivateXR = new EventEmitter<void>();
   @Output() $onARLoaded = new EventEmitter<ARContext>();
@@ -57,7 +59,9 @@ export class ArCanvasComponent implements OnInit {
 
     // Initialize a WebXR session using "immersive-ar".
     if (!window.navigator.xr) throw new Error("Unable to find XR system");
-    const sessionRequest = window.navigator.xr.requestSession("immersive-ar");
+    const sessionRequest = window.navigator.xr.requestSession(
+      this.mode, {requiredFeatures: this.requiredFeatures}
+    );
     if (!sessionRequest) throw new Error("Could not request immersive-ar session!")
     const session = await sessionRequest;
 
