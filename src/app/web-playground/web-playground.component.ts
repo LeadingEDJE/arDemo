@@ -2,7 +2,6 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {Router} from "@angular/router";
 import * as THREE from "three";
 import {BoxGeometry, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from "three";
-import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 @Component({
@@ -50,7 +49,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
     // Plane
     const PLANE_SIZE = 4;
-    const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png",);
+    const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png");
     gridTexture.wrapS = THREE.RepeatWrapping;
     gridTexture.wrapT = THREE.RepeatWrapping;
     gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
@@ -66,19 +65,27 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this.scene.add(plane);
 
     // The cube will have a different color on each side.
+    const leLogo = textureLoader.load("/assets/textures/EDJE-icon.png");
+    const leLogoMaterial = new THREE.MeshBasicMaterial();
+    leLogoMaterial.map = leLogo;
+    leLogoMaterial.needsUpdate = true;
+    leLogoMaterial.side = THREE.FrontSide;
+    leLogoMaterial.transparent = true;
+    leLogoMaterial.depthWrite = true;
     const cubeMaterial = [
-      new THREE.MeshBasicMaterial({color: 0xff0000}),
-      new THREE.MeshBasicMaterial({color: 0x0000ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ff00}),
-      new THREE.MeshBasicMaterial({color: 0xff00ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ffff}),
-      new THREE.MeshBasicMaterial({color: 0xffff00})
+      leLogoMaterial,
+      leLogoMaterial,
+      leLogoMaterial,
+      leLogoMaterial,
+      leLogoMaterial,
+      leLogoMaterial,
     ];
 
     // Create the cube and add it to the demo scene.
     const CUBE_SIZE = 0.25;
     this.cube = new THREE.Mesh(new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeMaterial);
     this.cube.position.set(-1, CUBE_SIZE / 2, -1);
+    this.cube.renderOrder = 5;
     this.scene.add(this.cube);
 
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
@@ -110,7 +117,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     }
     const delta = (time - this._time) / 1000;
     this._time = time;
-    this.cube.rotateY(Math.PI * delta);
+    this.cube.rotateY((Math.PI / 2) * delta);
     this.controls.update(delta);
     // Render the scene with THREE.WebGLRenderer.
     this.renderer.render(this.scene, this.camera);
