@@ -4,6 +4,7 @@ import * as THREE from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {Vector3} from "three";
 import {distance} from "three/examples/jsm/nodes/shadernode/ShaderNodeBaseElements";
+import TextSprite from '@seregpie/three.text-sprite';
 
 @Component({
   selector: 'app-plane-demo',
@@ -15,6 +16,7 @@ export class PlaneDemoComponent implements OnInit {
   @ViewChild('ARCanvas', {static: true})
   private canvasRef?: ElementRef;
   private canvas!: HTMLCanvasElement;
+  private debug = false;
 
   constructor(private router: Router) {
   }
@@ -115,6 +117,22 @@ export class PlaneDemoComponent implements OnInit {
         scenePoints.push(circle);
         scene.add(circle);
 
+        if (this.debug) {
+          const material2 = new THREE.LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
+
+          const points1: Vector3[] = [];
+          let start1 = reticle.position.clone();
+          let end1 = reticle.position.clone();
+          end1.setY(end1.y + 5);
+          points1.push(start1);
+          points1.push(end1);
+
+          const geometry1 = new THREE.BufferGeometry().setFromPoints( points1 );
+
+          const line = new THREE.Line( geometry1, material2 );
+          scene.add( line );
+        }
+
         if (scenePoints.length > 1) {
           const points: Vector3[] = [];
           let start = scenePoints[scenePoints.length - 1].position;
@@ -122,8 +140,17 @@ export class PlaneDemoComponent implements OnInit {
           points.push(start);
           points.push(end);
 
+          if (this.debug) {
+            const material2 = new THREE.LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
+            const geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+            const line = new THREE.Line( geometry, material2 );
+            scene.add( line );
+          }
+
           let height = 1; // arbitrary
           let width = start.distanceTo(end);
+          // const material1 = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
           const planeGeometry = new THREE.PlaneGeometry(width, height);
           const plane = new THREE.Mesh(planeGeometry, planeMaterial);
           const pos = (end.clone().sub(start)).divideScalar(2).add(start);
@@ -133,6 +160,22 @@ export class PlaneDemoComponent implements OnInit {
           plane.rotateY(Math.PI / 2);
 
           plane.position.setY(plane.position.y + .2);
+
+          // Draw Text
+          // distance in cm
+          let distance = Math.round(start.distanceTo(end) * 100);
+
+          let sprite = new TextSprite({
+            text: distance + ' cm',
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            fontSize: 0.1,
+            color: 'white',
+            strokeColor: 'black',
+            strokeWidth: 0.05
+          });
+          sprite.position.set(pos.x, pos.y + .75, pos.z);
+          sprite.renderOrder = 5;
+          scene.add(sprite);
 
           scene.add(plane);
         }
