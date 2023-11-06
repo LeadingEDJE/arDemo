@@ -23,6 +23,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
   private scene!: Scene;
   private cube!: Mesh<BoxGeometry>;
 
+  private plane!: Mesh;
+
   private controls!: OrbitControls;
 
   private _time: DOMHighResTimeStamp = 0;
@@ -40,8 +42,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     } else {
       throw new Error("AR Canvas is Required!")
     }
-    this.canvas.width = window.innerWidth - 100;
-    this.canvas.height = window.innerHeight - 100;
+    this.canvas.width = window.innerWidth - 50;
+    this.canvas.height = window.innerHeight - 120;
     const webGL = this.canvas.getContext("webgl");
     if (!webGL) throw new Error("Unable to load WebGL rendering context");
 
@@ -63,6 +65,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     const plane = new THREE.Mesh(geometry, gridMaterial);
     plane.position.set(0, 0, 0);
     plane.lookAt(new Vector3(0, 5, 0));
+    this.plane = plane;
     this.scene.add(plane);
 
     // The cube will have a different color on each side.
@@ -98,6 +101,22 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this.controls = new OrbitControls(this.camera, this.canvas);
     this.running = true;
     window.requestAnimationFrame((delta) => this.onAnimationFrame(delta));
+  }
+
+  onFileChanged(event: any) {
+    const file = event.target.files[0]
+    const userImageURL = URL.createObjectURL( file );
+    const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin("");
+    const texture = loader.load(userImageURL);
+    const gridMaterial = new THREE.MeshBasicMaterial();
+
+    gridMaterial.map = texture;
+    gridMaterial.needsUpdate = true;
+    gridMaterial.side = THREE.DoubleSide;
+    gridMaterial.transparent = true;
+
+    this.plane.material = gridMaterial;
   }
 
   public ngOnDestroy() {
