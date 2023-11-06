@@ -1,17 +1,22 @@
 import {Component} from '@angular/core';
 import {
+  BufferGeometry,
   CircleGeometry,
   DirectionalLight,
   DoubleSide,
+  Line,
+  LineBasicMaterial,
   Mesh,
   MeshBasicMaterial,
   Object3D,
   PlaneGeometry,
   Scene,
-  TextureLoader
+  TextureLoader,
+  Vector3
 } from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {ARContext, ARFrameEvent} from "../ar-canvas/ar-canvas.component";
+import TextSprite from '@seregpie/three.text-sprite';
 
 @Component({
   selector: 'app-plane-demo',
@@ -28,6 +33,7 @@ export class PlaneDemoComponent {
   private space!: XRReferenceSpace;
   private scenePoints: Object3D[] = [];
   private planeMaterial!: MeshBasicMaterial;
+  private debug = false;
 
   public onARLoaded = async (context: ARContext): Promise<void> => {
     const {session} = context;
@@ -68,9 +74,9 @@ export class PlaneDemoComponent {
 
   private placePoint(): void {
     if (this.reticle) {
-      const geometry = new CircleGeometry(0.01, 32);
-      const material = new MeshBasicMaterial({color: 0x0000ff});
-      const circle = new Mesh(geometry, material);
+      const geometry = new CircleGeometry( 0.01, 32 );
+      const material = new MeshBasicMaterial( { color: 0x0000ff } );
+      const circle = new Mesh( geometry, material );
       circle.position.copy(this.reticle.position);
       // This is to snap the position to a close position
       this.scenePoints.forEach(point => {
@@ -82,15 +88,40 @@ export class PlaneDemoComponent {
       this.scenePoints.push(circle);
       this.scene.add(circle);
 
+      if (this.debug) {
+        const material2 = new LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
+
+        const points1: Vector3[] = [];
+        let start1 = this.reticle.position.clone();
+        let end1 = this.reticle.position.clone();
+        end1.setY(end1.y + 5);
+        points1.push(start1);
+        points1.push(end1);
+
+        const geometry1 = new BufferGeometry().setFromPoints( points1 );
+
+        const line = new Line( geometry1, material2 );
+        this.scene.add( line );
+      }
+
       if (this.scenePoints.length > 1) {
-        // const points: Vector3[] = [];
+        const points: Vector3[] = [];
         let start = this.scenePoints[this.scenePoints.length - 1].position;
         let end = this.scenePoints[this.scenePoints.length - 2].position
-        // points.push(start);
-        // points.push(end);
+        points.push(start);
+        points.push(end);
+
+        if (this.debug) {
+          const material2 = new LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
+          const geometry = new BufferGeometry().setFromPoints( points );
+
+          const line = new Line( geometry, material2 );
+          this.scene.add( line );
+        }
 
         let height = 1; // arbitrary
         let width = start.distanceTo(end);
+        // const material1 = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const planeGeometry = new PlaneGeometry(width, height);
         const plane = new Mesh(planeGeometry, this.planeMaterial);
         const pos = (end.clone().sub(start)).divideScalar(2).add(start);
@@ -100,6 +131,22 @@ export class PlaneDemoComponent {
         plane.rotateY(Math.PI / 2);
 
         plane.position.setY(plane.position.y + .2);
+
+        // Draw Text
+        // distance in cm
+        let distance = Math.round(start.distanceTo(end) * 100);
+
+        let sprite = new TextSprite({
+          text: distance + ' cm',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontSize: 0.1,
+          color: 'white',
+          strokeColor: 'black',
+          strokeWidth: 0.05
+        });
+        sprite.position.set(pos.x, pos.y + .75, pos.z);
+        sprite.renderOrder = 5;
+        this.scene.add(sprite);
 
         this.scene.add(plane);
       }

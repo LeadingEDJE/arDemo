@@ -1,9 +1,20 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import * as THREE from "three";
-import {BoxGeometry, Mesh, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from "three";
-import {FirstPersonControls} from "three/examples/jsm/controls/FirstPersonControls";
+import {
+  BoxGeometry,
+  DoubleSide,
+  Mesh,
+  MeshBasicMaterial,
+  PerspectiveCamera,
+  PlaneGeometry,
+  RepeatWrapping,
+  Scene,
+  TextureLoader,
+  Vector3,
+  WebGLRenderer
+} from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import TextSprite from "@seregpie/three.text-sprite";
 
 @Component({
   selector: 'app-web-playground',
@@ -47,22 +58,22 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     const webGL = this.canvas.getContext("webgl");
     if (!webGL) throw new Error("Unable to load WebGL rendering context");
 
-    this.scene = new THREE.Scene();
-    const textureLoader = new THREE.TextureLoader();
+    this.scene = new Scene();
+    const textureLoader = new TextureLoader();
 
     // Plane
     const PLANE_SIZE = 4;
     const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png",);
-    gridTexture.wrapS = THREE.RepeatWrapping;
-    gridTexture.wrapT = THREE.RepeatWrapping;
+    gridTexture.wrapS = RepeatWrapping;
+    gridTexture.wrapT = RepeatWrapping;
     gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
-    const gridMaterial = new THREE.MeshBasicMaterial();
+    const gridMaterial = new MeshBasicMaterial();
     gridMaterial.map = gridTexture;
     gridMaterial.needsUpdate = true;
-    gridMaterial.side = THREE.DoubleSide;
+    gridMaterial.side = DoubleSide;
     gridMaterial.transparent = true;
-    const geometry = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE);
-    const plane = new THREE.Mesh(geometry, gridMaterial);
+    const geometry = new PlaneGeometry(PLANE_SIZE, PLANE_SIZE);
+    const plane = new Mesh(geometry, gridMaterial);
     plane.position.set(0, 0, 0);
     plane.lookAt(new Vector3(0, 5, 0));
     this.plane = plane;
@@ -70,22 +81,35 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
     // The cube will have a different color on each side.
     const cubeMaterial = [
-      new THREE.MeshBasicMaterial({color: 0xff0000}),
-      new THREE.MeshBasicMaterial({color: 0x0000ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ff00}),
-      new THREE.MeshBasicMaterial({color: 0xff00ff}),
-      new THREE.MeshBasicMaterial({color: 0x00ffff}),
-      new THREE.MeshBasicMaterial({color: 0xffff00})
+      new MeshBasicMaterial({color: 0xff0000}),
+      new MeshBasicMaterial({color: 0x0000ff}),
+      new MeshBasicMaterial({color: 0x00ff00}),
+      new MeshBasicMaterial({color: 0xff00ff}),
+      new MeshBasicMaterial({color: 0x00ffff}),
+      new MeshBasicMaterial({color: 0xffff00})
     ];
 
     // Create the cube and add it to the demo scene.
     const CUBE_SIZE = 0.25;
-    this.cube = new THREE.Mesh(new THREE.BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeMaterial);
+    this.cube = new Mesh(new BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeMaterial);
     this.cube.position.set(-1, CUBE_SIZE / 2, -1);
     this.scene.add(this.cube);
 
+    // Draw Text
+    let sprite = new TextSprite({
+      text: 'Hello World!',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      fontSize: 0.1,
+      color: 'white',
+      strokeColor: 'black',
+      strokeWidth: 0.05
+    });
+    sprite.position.set(1, 0.1, -1);
+    sprite.renderOrder = 5;
+    this.scene.add(sprite);
+
     // Set up the WebGLRenderer, which handles rendering to the session's base layer.
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       alpha: true,
       preserveDrawingBuffer: true,
       canvas: this.canvas,
@@ -93,7 +117,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     });
     this.renderer.autoClear = false;
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-    this.camera = new THREE.PerspectiveCamera();
+    this.camera = new PerspectiveCamera();
     this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;
     this.camera.position.set(1, 1, 1);
     this.camera.lookAt(plane.position);
@@ -106,14 +130,14 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
   onFileChanged(event: any) {
     const file = event.target.files[0]
     const userImageURL = URL.createObjectURL( file );
-    const loader = new THREE.TextureLoader();
+    const loader = new TextureLoader();
     loader.setCrossOrigin("");
     const texture = loader.load(userImageURL);
-    const gridMaterial = new THREE.MeshBasicMaterial();
+    const gridMaterial = new MeshBasicMaterial();
 
     gridMaterial.map = texture;
     gridMaterial.needsUpdate = true;
-    gridMaterial.side = THREE.DoubleSide;
+    gridMaterial.side = DoubleSide;
     gridMaterial.transparent = true;
 
     this.plane.material = gridMaterial;
@@ -131,7 +155,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this._time = time;
     this.cube.rotateY(Math.PI * delta);
     this.controls.update(delta);
-    // Render the scene with THREE.WebGLRenderer.
+    // Render the scene with WebGLRenderer.
     this.renderer.render(this.scene, this.camera);
   }
 }
