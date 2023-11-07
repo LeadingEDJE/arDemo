@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {BufferGeometry, DirectionalLight, Line, LineBasicMaterial, Object3D, Scene} from "three";
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {ARContext, ARFrameEvent} from "../ar-canvas/ar-canvas.component";
+import Resources from "../models/resources";
 
 @Component({
   selector: 'app-line-demo',
@@ -28,7 +29,7 @@ export class LineDemoComponent {
     this.scene.add(directionalLight);
 
     const loader = new GLTFLoader();
-    loader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", (gltf) => {
+    loader.load(Resources.reticle.gltf, (gltf) => {
       this.reticle = gltf.scene;
       this.reticle.visible = false;
       this.scene.add(this.reticle);

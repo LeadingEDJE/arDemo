@@ -15,6 +15,7 @@ import {
 } from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import TextSprite from "@seregpie/three.text-sprite";
+import Resources from "../models/resources";
 
 @Component({
   selector: 'app-web-playground',
@@ -63,7 +64,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
     // Plane
     const PLANE_SIZE = 4;
-    const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png",);
+    const gridTexture = textureLoader.load(Resources.grid.png);
     gridTexture.wrapS = RepeatWrapping;
     gridTexture.wrapT = RepeatWrapping;
     gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
@@ -129,7 +130,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
   onFileChanged(event: any) {
     const file = event.target.files[0]
-    const userImageURL = URL.createObjectURL( file );
+    const userImageURL = URL.createObjectURL(file);
     const loader = new TextureLoader();
     loader.setCrossOrigin("");
     const texture = loader.load(userImageURL);

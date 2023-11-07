@@ -17,6 +17,7 @@ import {
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {ARContext, ARFrameEvent} from "../ar-canvas/ar-canvas.component";
 import TextSprite from '@seregpie/three.text-sprite';
+import Resources from "../models/resources";
 
 @Component({
   selector: 'app-plane-demo',
@@ -45,7 +46,7 @@ export class PlaneDemoComponent {
 
     const gltfLoader = new GLTFLoader();
 
-    gltfLoader.load("https://immersive-web.github.io/webxr-samples/media/gltf/reticle/reticle.gltf", (gltf) => {
+    gltfLoader.load(Resources.reticle.gltf, (gltf) => {
       this.reticle = gltf.scene;
       this.reticle.visible = false;
       this.scene.add(this.reticle);
@@ -54,16 +55,15 @@ export class PlaneDemoComponent {
 
     const textureLoader = new TextureLoader();
     this.planeMaterial = new MeshBasicMaterial();
-    textureLoader.load('https://png.pngtree.com/png-vector/20220805/ourmid/pngtree-picket-fence-ancient-architecture-arrowhead-png-image_5750495.png',
-      (texture) => {
-        // The texture has loaded, so assign it to your material object. In the
-        // next render cycle, this material update will be shown on the plane
-        // geometry
-        this.planeMaterial.map = texture;
-        this.planeMaterial.needsUpdate = true;
-        this.planeMaterial.side = DoubleSide;
-        this.planeMaterial.transparent = true;
-      });
+    textureLoader.load(Resources.fence.png, (texture) => {
+      // The texture has loaded, so assign it to your material object. In the
+      // next render cycle, this material update will be shown on the plane
+      // geometry
+      this.planeMaterial.map = texture;
+      this.planeMaterial.needsUpdate = true;
+      this.planeMaterial.side = DoubleSide;
+      this.planeMaterial.transparent = true;
+    });
     session.addEventListener("select", () => this.placePoint());
 
     // Create another XRReferenceSpace that has the viewer as the origin.
@@ -74,9 +74,9 @@ export class PlaneDemoComponent {
 
   private placePoint(): void {
     if (this.reticle) {
-      const geometry = new CircleGeometry( 0.01, 32 );
-      const material = new MeshBasicMaterial( { color: 0x0000ff } );
-      const circle = new Mesh( geometry, material );
+      const geometry = new CircleGeometry(0.01, 32);
+      const material = new MeshBasicMaterial({color: 0x0000ff});
+      const circle = new Mesh(geometry, material);
       circle.position.copy(this.reticle.position);
       // This is to snap the position to a close position
       this.scenePoints.forEach(point => {
@@ -89,7 +89,7 @@ export class PlaneDemoComponent {
       this.scene.add(circle);
 
       if (this.debug) {
-        const material2 = new LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
+        const material2 = new LineBasicMaterial({color: 0x0000ff, linewidth: 5});
 
         const points1: Vector3[] = [];
         let start1 = this.reticle.position.clone();
@@ -98,10 +98,10 @@ export class PlaneDemoComponent {
         points1.push(start1);
         points1.push(end1);
 
-        const geometry1 = new BufferGeometry().setFromPoints( points1 );
+        const geometry1 = new BufferGeometry().setFromPoints(points1);
 
-        const line = new Line( geometry1, material2 );
-        this.scene.add( line );
+        const line = new Line(geometry1, material2);
+        this.scene.add(line);
       }
 
       if (this.scenePoints.length > 1) {
@@ -112,11 +112,11 @@ export class PlaneDemoComponent {
         points.push(end);
 
         if (this.debug) {
-          const material2 = new LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
-          const geometry = new BufferGeometry().setFromPoints( points );
+          const material2 = new LineBasicMaterial({color: 0x0000ff, linewidth: 5});
+          const geometry = new BufferGeometry().setFromPoints(points);
 
-          const line = new Line( geometry, material2 );
-          this.scene.add( line );
+          const line = new Line(geometry, material2);
+          this.scene.add(line);
         }
 
         let height = 1; // arbitrary
