@@ -64,7 +64,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
     // Plane
     const PLANE_SIZE = 4;
-    const gridTexture = textureLoader.load(Resources.grid.png);
+    const gridTexture = textureLoader.load(Resources.GRID_PNG);
     gridTexture.wrapS = RepeatWrapping;
     gridTexture.wrapT = RepeatWrapping;
     gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
