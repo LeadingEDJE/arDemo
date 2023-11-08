@@ -8,7 +8,7 @@ describe('ArCanvasComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ArCanvasComponent]
+      declarations: [ArCanvasComponent],
     });
     fixture = TestBed.createComponent(ArCanvasComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,11 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import {
   BoxGeometry,
   DoubleSide,
@@ -11,19 +17,18 @@ import {
   Scene,
   TextureLoader,
   Vector3,
-  WebGLRenderer
-} from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import TextSprite from "@seregpie/three.text-sprite";
+  WebGLRenderer,
+} from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import TextSprite from '@seregpie/three.text-sprite';
 
 @Component({
   selector: 'app-web-playground',
   templateUrl: './web-playground.component.html',
-  styleUrls: ['./web-playground.component.scss']
+  styleUrls: ['./web-playground.component.scss'],
 })
 export class WebPlaygroundComponent implements OnInit, OnDestroy {
-
-  @ViewChild('ARCanvas', {static: true})
+  @ViewChild('ARCanvas', { static: true })
   private canvasRef?: ElementRef;
   private canvas!: HTMLCanvasElement;
 
@@ -40,8 +45,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
   private _time: DOMHighResTimeStamp = 0;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   async navigate(target: string): Promise<boolean> {
     return this.router.navigate([target]);
@@ -49,21 +53,23 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     if (this.canvasRef) {
-      this.canvas = this.canvasRef.nativeElement as HTMLCanvasElement
+      this.canvas = this.canvasRef.nativeElement as HTMLCanvasElement;
     } else {
-      throw new Error("AR Canvas is Required!")
+      throw new Error('AR Canvas is Required!');
     }
     this.canvas.width = window.innerWidth - 50;
     this.canvas.height = window.innerHeight - 120;
-    const webGL = this.canvas.getContext("webgl");
-    if (!webGL) throw new Error("Unable to load WebGL rendering context");
+    const webGL = this.canvas.getContext('webgl');
+    if (!webGL) throw new Error('Unable to load WebGL rendering context');
 
     this.scene = new Scene();
     const textureLoader = new TextureLoader();
 
     // Plane
     const PLANE_SIZE = 4;
-    const gridTexture = textureLoader.load("/assets/textures/texture_1m x 1m.png",);
+    const gridTexture = textureLoader.load(
+      '/assets/textures/texture_1m x 1m.png',
+    );
     gridTexture.wrapS = RepeatWrapping;
     gridTexture.wrapT = RepeatWrapping;
     gridTexture.repeat.set(PLANE_SIZE, PLANE_SIZE);
@@ -81,17 +87,20 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
     // The cube will have a different color on each side.
     const cubeMaterial = [
-      new MeshBasicMaterial({color: 0xff0000}),
-      new MeshBasicMaterial({color: 0x0000ff}),
-      new MeshBasicMaterial({color: 0x00ff00}),
-      new MeshBasicMaterial({color: 0xff00ff}),
-      new MeshBasicMaterial({color: 0x00ffff}),
-      new MeshBasicMaterial({color: 0xffff00})
+      new MeshBasicMaterial({ color: 0xff0000 }),
+      new MeshBasicMaterial({ color: 0x0000ff }),
+      new MeshBasicMaterial({ color: 0x00ff00 }),
+      new MeshBasicMaterial({ color: 0xff00ff }),
+      new MeshBasicMaterial({ color: 0x00ffff }),
+      new MeshBasicMaterial({ color: 0xffff00 }),
     ];
 
     // Create the cube and add it to the demo scene.
     const CUBE_SIZE = 0.25;
-    this.cube = new Mesh(new BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE), cubeMaterial);
+    this.cube = new Mesh(
+      new BoxGeometry(CUBE_SIZE, CUBE_SIZE, CUBE_SIZE),
+      cubeMaterial,
+    );
     this.cube.position.set(-1, CUBE_SIZE / 2, -1);
     this.scene.add(this.cube);
 
@@ -102,7 +111,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
       fontSize: 0.1,
       color: 'white',
       strokeColor: 'black',
-      strokeWidth: 0.05
+      strokeWidth: 0.05,
     });
     sprite.position.set(1, 0.1, -1);
     sprite.renderOrder = 5;
@@ -113,7 +122,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
       alpha: true,
       preserveDrawingBuffer: true,
       canvas: this.canvas,
-      context: webGL
+      context: webGL,
     });
     this.renderer.autoClear = false;
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
@@ -129,10 +138,10 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
 
   // @ts-ignore
   onFileChanged(event) {
-    const file = event.target.files[0]
-    const userImageURL = URL.createObjectURL( file );
+    const file = event.target.files[0];
+    const userImageURL = URL.createObjectURL(file);
     const loader = new TextureLoader();
-    loader.setCrossOrigin("");
+    loader.setCrossOrigin('');
     const texture = loader.load(userImageURL);
     const gridMaterial = new MeshBasicMaterial();
 
