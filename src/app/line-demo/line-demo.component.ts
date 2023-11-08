@@ -29,7 +29,7 @@ export class LineDemoComponent {
     this.scene.add(directionalLight);
 
     const loader = new GLTFLoader();
-    loader.load(Resources.reticle.gltf, (gltf) => {
+    loader.load(Resources.RETICLE_GLTF, (gltf) => {
       this.reticle = gltf.scene;
       this.reticle.visible = false;
       this.scene.add(this.reticle);

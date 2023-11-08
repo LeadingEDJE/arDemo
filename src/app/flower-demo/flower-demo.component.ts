@@ -29,13 +29,13 @@ export class FlowerDemoComponent {
     this.scene.add(directionalLight);
 
     const loader = new GLTFLoader();
-    loader.load(Resources.reticle.gltf, (gltf) => {
+    loader.load(Resources.RETICLE_GLTF, (gltf) => {
       this.reticle = gltf.scene;
       this.reticle.visible = false;
       this.scene.add(this.reticle);
     });
 
-    loader.load(Resources.flower.gltf, (gltf) => {
+    loader.load(Resources.FLOWER_GLTF, (gltf) => {
       this.flower = gltf.scene;
       session.addEventListener("select", () => this.placeFlower());
     });

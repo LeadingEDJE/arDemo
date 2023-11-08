@@ -48,7 +48,7 @@ export class PlaneDemoComponent {
 
     const gltfLoader = new GLTFLoader();
 
-    gltfLoader.load(Resources.reticle.gltf, (gltf) => {
+    gltfLoader.load(Resources.RETICLE_GLTF, (gltf) => {
       this.reticle = gltf.scene;
       this.reticle.visible = false;
       this.scene.add(this.reticle);
@@ -56,7 +56,7 @@ export class PlaneDemoComponent {
 
     const textureLoader = new TextureLoader();
     this.planeMaterial = new MeshBasicMaterial();
-    textureLoader.load(Resources.fence.png, (texture) => {
+    textureLoader.load(Resources.FENCE_PNG, (texture) => {
       // The texture has loaded, so assign it to your material object. In the
       // next render cycle, this material update will be shown on the plane
       // geometry
