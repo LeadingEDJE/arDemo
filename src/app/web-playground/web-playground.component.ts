@@ -96,7 +96,7 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     this.scene.add(this.cube);
 
     // Draw Text
-    let sprite = new TextSprite({
+    const sprite = new TextSprite({
       text: 'Hello World!',
       fontFamily: 'Arial, Helvetica, sans-serif',
       fontSize: 0.1,
@@ -127,7 +127,8 @@ export class WebPlaygroundComponent implements OnInit, OnDestroy {
     window.requestAnimationFrame((delta) => this.onAnimationFrame(delta));
   }
 
-  onFileChanged(event: any) {
+  // @ts-ignore
+  onFileChanged(event) {
     const file = event.target.files[0]
     const userImageURL = URL.createObjectURL( file );
     const loader = new TextureLoader();

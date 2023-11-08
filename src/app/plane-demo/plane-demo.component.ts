@@ -70,6 +70,7 @@ export class PlaneDemoComponent {
     // Create another XRReferenceSpace that has the viewer as the origin.
     const viewerSpace = await session.requestReferenceSpace('viewer');
     // Perform hit testing using the viewer as origin.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.hitTestSource = await session.requestHitTestSource!({space: viewerSpace});
   }
 
@@ -93,8 +94,8 @@ export class PlaneDemoComponent {
         const material2 = new LineBasicMaterial( { color: 0x0000ff, linewidth: 5 } );
 
         const points1: Vector3[] = [];
-        let start1 = this.reticle.position.clone();
-        let end1 = this.reticle.position.clone();
+        const start1 = this.reticle.position.clone();
+        const end1 = this.reticle.position.clone();
         end1.setY(end1.y + 5);
         points1.push(start1);
         points1.push(end1);
@@ -107,8 +108,8 @@ export class PlaneDemoComponent {
 
       if (this.scenePoints.length > 1) {
         const points: Vector3[] = [];
-        let start = this.scenePoints[this.scenePoints.length - 1].position;
-        let end = this.scenePoints[this.scenePoints.length - 2].position
+        const start = this.scenePoints[this.scenePoints.length - 1].position;
+        const end = this.scenePoints[this.scenePoints.length - 2].position
         points.push(start);
         points.push(end);
 
@@ -120,8 +121,8 @@ export class PlaneDemoComponent {
           this.scene.add( line );
         }
 
-        let height = 1; // arbitrary
-        let width = start.distanceTo(end);
+        const height = 1; // arbitrary
+        const width = start.distanceTo(end);
         // const material1 = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         const planeGeometry = new PlaneGeometry(width, height);
         const plane = new Mesh(planeGeometry, this.planeMaterial);
@@ -135,9 +136,9 @@ export class PlaneDemoComponent {
 
         // Draw Text
         // distance in cm
-        let distance = Math.round(start.distanceTo(end) * 100);
+        const distance = Math.round(start.distanceTo(end) * 100);
 
-        let sprite = new TextSprite({
+        const sprite = new TextSprite({
           text: distance + ' cm',
           fontFamily: 'Arial, Helvetica, sans-serif',
           fontSize: 0.1,

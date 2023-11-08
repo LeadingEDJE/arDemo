@@ -9,7 +9,7 @@ import {Camera, PerspectiveCamera, Scene, WebGLRenderer} from "three";
 })
 export class ArCanvasComponent implements OnInit {
 
-  @Input() pageTitle: string = "AR Canvas";
+  @Input() pageTitle = "AR Canvas";
   @Input() xrMode: XRSessionMode = "immersive-ar";
   @Input() xrRequiredFeatures: string[] = [];
   @Input() onBeforeARLoad: () => Promise<void> = async (): Promise<void> => {
@@ -29,7 +29,7 @@ export class ArCanvasComponent implements OnInit {
   private _canvas!: HTMLCanvasElement;
 
   private _context!: ARContext;
-  private _time: number = 0;
+  private _time = 0;
 
   constructor(private router: Router) {
   }

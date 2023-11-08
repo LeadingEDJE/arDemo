@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {BoxGeometry, Mesh, MeshBasicMaterial} from "three";
 import {ARContext} from "../ar-canvas/ar-canvas.component";
-import {bindCallback} from "rxjs";
 
 @Component({
   selector: 'app-cube-demo',
@@ -25,5 +24,4 @@ export class CubeDemoComponent {
     cube.position.set(0, 0, -1);
     context.scene.add(cube);
   }
-
 }
