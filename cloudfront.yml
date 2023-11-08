@@ -52,7 +52,7 @@ Resources:
               - s3:PutObject
             Effect: Allow
             Principal:
-              AWS: !Sub arn:aws:iam::${AWS::AccountId}:role/GitHubApplicationDeploymentRole
+              AWS: !Sub arn:aws:iam::${AWS::AccountId}:role/GithubApplicationDeploymentRole
             Resource:
               - !Sub ${Bucket.Arn}
               - !Sub ${Bucket.Arn}/*
