@@ -38,6 +38,7 @@ export class LineDemoComponent {
 
     // Create another XRReferenceSpace that has the viewer as the origin.
     const viewerSpace = await session.requestReferenceSpace('viewer');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const hts = session.requestHitTestSource!({space: viewerSpace});
     this.hitTestSource = await hts;
   }

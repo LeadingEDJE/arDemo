@@ -41,6 +41,7 @@ export class FlowerDemoComponent {
 
     // Perform hit testing using the viewer as origin.
     const viewerSpace = await session.requestReferenceSpace('viewer');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.hitTestSource = await session.requestHitTestSource!({space: viewerSpace});
   }
 
