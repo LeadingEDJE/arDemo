@@ -4,6 +4,8 @@
   [onARLoaded]="onARLoaded"
   [onARFrame]="onARFrame"
 ></app-ar-canvas>
+<div>Fence: <input type="file" (change)="onFileChanged($event)" />
+</div>
 <div *ngFor="let distance of listOfDistances; index as i">
   <div>Distance {{ i + 1 }}: {{ distance }} cm</div>
 </div>

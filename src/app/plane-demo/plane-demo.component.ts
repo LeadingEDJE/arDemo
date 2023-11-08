@@ -55,20 +55,23 @@ export class PlaneDemoComponent {
       },
     );
 
-    const textureLoader = new TextureLoader();
-    this.planeMaterial = new MeshBasicMaterial();
-    textureLoader.load(
-      'https://png.pngtree.com/png-vector/20220805/ourmid/pngtree-picket-fence-ancient-architecture-arrowhead-png-image_5750495.png',
-      (texture) => {
-        // The texture has loaded, so assign it to your material object. In the
-        // next render cycle, this material update will be shown on the plane
-        // geometry
-        this.planeMaterial.map = texture;
-        this.planeMaterial.needsUpdate = true;
-        this.planeMaterial.side = DoubleSide;
-        this.planeMaterial.transparent = true;
-      },
-    );
+    if (!this.planeMaterial) {
+      const textureLoader = new TextureLoader();
+      this.planeMaterial = new MeshBasicMaterial();
+      textureLoader.load(
+        'https://png.pngtree.com/png-vector/20220805/ourmid/pngtree-picket-fence-ancient-architecture-arrowhead-png-image_5750495.png',
+        (texture) => {
+          // The texture has loaded, so assign it to your material object. In the
+          // next render cycle, this material update will be shown on the plane
+          // geometry
+          this.planeMaterial.map = texture;
+          this.planeMaterial.needsUpdate = true;
+          this.planeMaterial.side = DoubleSide;
+          this.planeMaterial.transparent = true;
+        },
+      );
+    }
+
     session.addEventListener('select', () => this.placePoint());
 
     // Create another XRReferenceSpace that has the viewer as the origin.
@@ -188,4 +191,20 @@ export class PlaneDemoComponent {
       }
     }
   };
+
+  public onFileChanged(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.item(0);
+    if (!file) throw new Error('Could not find file');
+    const userImageURL = URL.createObjectURL(file);
+    const loader = new TextureLoader();
+    loader.setCrossOrigin('');
+    const texture = loader.load(userImageURL);
+    const material = new MeshBasicMaterial();
+    material.map = texture;
+    material.needsUpdate = true;
+    material.side = DoubleSide;
+    material.transparent = true;
+    this.planeMaterial = material;
+  }
 }
