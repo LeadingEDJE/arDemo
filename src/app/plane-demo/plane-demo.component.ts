@@ -24,6 +24,11 @@ import TextSprite from '@seregpie/three.text-sprite';
   styleUrls: ['./plane-demo.component.scss'],
 })
 export class PlaneDemoComponent {
+  public readonly WHITE_FENCE =
+    'https://png.pngtree.com/png-vector/20220805/ourmid/pngtree-picket-fence-ancient-architecture-arrowhead-png-image_5750495.png';
+  public readonly CARTOON_FENCE =
+    'https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/71290/fence-clipart-md.png';
+
   public xrRequiredFeatures = ['hit-test'];
 
   private scene!: Scene;
@@ -33,6 +38,7 @@ export class PlaneDemoComponent {
   private scenePoints: Object3D[] = [];
   private planeMaterial!: MeshBasicMaterial;
   private debug = false;
+  private selectedFence?: string;
 
   public listOfDistances: Array<number> = [];
 
@@ -55,22 +61,18 @@ export class PlaneDemoComponent {
       },
     );
 
-    if (!this.planeMaterial) {
-      const textureLoader = new TextureLoader();
-      this.planeMaterial = new MeshBasicMaterial();
-      textureLoader.load(
-        'https://png.pngtree.com/png-vector/20220805/ourmid/pngtree-picket-fence-ancient-architecture-arrowhead-png-image_5750495.png',
-        (texture) => {
-          // The texture has loaded, so assign it to your material object. In the
-          // next render cycle, this material update will be shown on the plane
-          // geometry
-          this.planeMaterial.map = texture;
-          this.planeMaterial.needsUpdate = true;
-          this.planeMaterial.side = DoubleSide;
-          this.planeMaterial.transparent = true;
-        },
-      );
-    }
+    this.selectedFence = this.selectedFence ?? this.WHITE_FENCE;
+    const textureLoader = new TextureLoader();
+    this.planeMaterial = new MeshBasicMaterial();
+    textureLoader.load(this.selectedFence, (texture) => {
+      // The texture has loaded, so assign it to your material object. In the
+      // next render cycle, this material update will be shown on the plane
+      // geometry
+      this.planeMaterial.map = texture;
+      this.planeMaterial.needsUpdate = true;
+      this.planeMaterial.side = DoubleSide;
+      this.planeMaterial.transparent = true;
+    });
 
     session.addEventListener('select', () => this.placePoint());
 
@@ -192,19 +194,8 @@ export class PlaneDemoComponent {
     }
   };
 
-  public onFileChanged(event: Event) {
+  public selectFence(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input?.files?.item(0);
-    if (!file) throw new Error('Could not find file');
-    const userImageURL = URL.createObjectURL(file);
-    const loader = new TextureLoader();
-    loader.setCrossOrigin('');
-    const texture = loader.load(userImageURL);
-    const material = new MeshBasicMaterial();
-    material.map = texture;
-    material.needsUpdate = true;
-    material.side = DoubleSide;
-    material.transparent = true;
-    this.planeMaterial = material;
+    this.selectedFence = input.value;
   }
 }

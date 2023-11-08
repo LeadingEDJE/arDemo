@@ -1,11 +1,17 @@
 <app-ar-canvas
-  pageTitle="Plane Demo"
-  [xrRequiredFeatures]="xrRequiredFeatures"
-  [onARLoaded]="onARLoaded"
-  [onARFrame]="onARFrame"
+        pageTitle="Plane Demo"
+        [xrRequiredFeatures]="xrRequiredFeatures"
+        [onARLoaded]="onARLoaded"
+        [onARFrame]="onARFrame"
 ></app-ar-canvas>
-<div>Fence: <input type="file" (change)="onFileChanged($event)" />
+<div>Fence:
+    <label>
+        <input type="radio" name="fence" [value]="WHITE_FENCE" (change)="selectFence($event)">White
+    </label>
+    <label>
+        <input type="radio" name="fence" [value]="CARTOON_FENCE" (change)="selectFence($event)">Cartoon
+    </label>
 </div>
 <div *ngFor="let distance of listOfDistances; index as i">
-  <div>Distance {{ i + 1 }}: {{ distance }} cm</div>
+    <div>Distance {{ i + 1 }}: {{ distance }} cm</div>
 </div>
