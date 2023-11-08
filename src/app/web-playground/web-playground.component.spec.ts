@@ -8,7 +8,7 @@ describe('WebPlaygroundComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WebPlaygroundComponent]
+      declarations: [WebPlaygroundComponent],
     });
     fixture = TestBed.createComponent(WebPlaygroundComponent);
     component = fixture.componentInstance;

@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CubeDemoComponent } from './cube-demo/cube-demo.component';
 import { HomeComponent } from './home/home.component';
-import {FlowerDemoComponent} from "./flower-demo/flower-demo.component";
-import {LineDemoComponent} from "./line-demo/line-demo.component";
+import { FlowerDemoComponent } from './flower-demo/flower-demo.component';
+import { LineDemoComponent } from './line-demo/line-demo.component';
 import { PlaneDemoComponent } from './plane-demo/plane-demo.component';
 import { WebPlaygroundComponent } from './web-playground/web-playground.component';
 import { ArCanvasComponent } from './ar-canvas/ar-canvas.component';
@@ -20,13 +20,10 @@ import { ArCanvasComponent } from './ar-canvas/ar-canvas.component';
     HomeComponent,
     PlaneDemoComponent,
     WebPlaygroundComponent,
-    ArCanvasComponent
+    ArCanvasComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
