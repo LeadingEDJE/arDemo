@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint-fix": "ng lint --fix",
-    "format": "prettier --write ."
+    "format-check": "prettier --check .",
+    "format-fix": "prettier --write ."
   },
   "private": true,
   "dependencies": {
