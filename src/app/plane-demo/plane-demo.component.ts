@@ -36,6 +36,8 @@ export class PlaneDemoComponent {
   private planeMaterial!: MeshBasicMaterial;
   private debug = false;
 
+  public listOfDistances: Array<number> = [];
+
   public onARLoaded = async (context: ARContext): Promise<void> => {
     const {session} = context;
     this.scene = context.scene;
@@ -51,7 +53,6 @@ export class PlaneDemoComponent {
       this.reticle.visible = false;
       this.scene.add(this.reticle);
     });
-
 
     const textureLoader = new TextureLoader();
     this.planeMaterial = new MeshBasicMaterial();
@@ -148,6 +149,8 @@ export class PlaneDemoComponent {
         sprite.renderOrder = 5;
         this.scene.add(sprite);
 
+        this.listOfDistances.push(distance);
+
         this.scene.add(plane);
       }
     }
@@ -165,5 +168,4 @@ export class PlaneDemoComponent {
       }
     }
   }
-
 }

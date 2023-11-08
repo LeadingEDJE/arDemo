@@ -21,7 +21,9 @@ export class ArCanvasComponent implements OnInit {
   @Input() onARFrame: (arFrameEvent: ARFrameEvent) => Promise<void> = async (): Promise<void> => {
     // dummy that will be replaced by parent component
   };
-
+  @Input() onArEnded: () => Promise<void> = async (): Promise<void> => {
+    // dummy that will be replaced by parent component
+  };
   @ViewChild('ARCanvas', {static: true})
   private _canvasRef?: ElementRef;
   private _canvas!: HTMLCanvasElement;
@@ -68,6 +70,11 @@ export class ArCanvasComponent implements OnInit {
     );
     if (!sessionRequest) throw new Error("Could not request immersive-ar session!")
     const session = await sessionRequest;
+
+    session.onend = async () => {
+      await this.onArEnded();
+      this._canvas.hidden = true;
+    };
 
     await session.updateRenderState({
       baseLayer: new XRWebGLLayer(session, webGLContext)

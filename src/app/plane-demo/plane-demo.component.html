@@ -3,3 +3,6 @@
                [onARLoaded]="onARLoaded"
                [onARFrame]="onARFrame"
 ></app-ar-canvas>
+<div *ngFor="let distance of listOfDistances; index as i">
+    <div>Distance {{i + 1}}: {{distance}} cm</div>
+</div>
