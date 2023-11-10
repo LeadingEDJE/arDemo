@@ -25,6 +25,8 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test:headless
+      - name: "ECHO AWS"
+        run: echo "role=$AWS_ROLE bucket=$S3_BUCKET"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
