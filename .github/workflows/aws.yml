@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'main'
+env:
+  aws_role: ${{ secrets.AWS_ROLE }}
+  s3_bucket: ${{ secrets.S3_BUCKET }}
 
 jobs:
   build:
@@ -26,12 +29,12 @@ jobs:
       - name: Test
         run: npm run test:headless
       - name: "ECHO AWS"
-        run: echo "role=$AWS_ROLE bucket=$S3_BUCKET"
+        run: echo "role=$aws_role  bucket=$s3_bucket"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: $AWS_ROLE
+          role-to-assume: $aws_role
           aws-region: us-east-2
       - name: Copy files to the test website with the AWS CLI
         run: |
-          aws s3 sync . s3://$S3_BUCKET
+          aws s3 sync . s3://$s3_bucket
