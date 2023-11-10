@@ -28,8 +28,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${AWS_ROLE}
+          role-to-assume: $AWS_ROLE
           aws-region: us-east-2
       - name: Copy files to the test website with the AWS CLI
         run: |
-          aws s3 sync . s3://${S3_BUCKET}
+          aws s3 sync . s3://$S3_BUCKET
